@@ -1,0 +1,34 @@
+name: Generate Cache
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: cachix/install-nix-action@master
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Use Shopware Cache
+        uses: cachix/cachix-action@master
+        with:
+          name: shopware
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Build Redis (8.1)
+        run: cachix push shopware $(nix build nixpkgs#php81Extensions.redis --no-link --print-out-paths)
+        
+      - name: Build GRPC (8.1)
+        run: cachix push shopware $(nix build nixpkgs#php81Extensions.grpc --no-link --print-out-paths)
+        
+      - name: Build Redis (8.2)
+        run: cachix push shopware $(nix build nixpkgs#php82Extensions.redis --no-link --print-out-paths)
+        
+      - name: Build GRPC (8.2)
+        run: cachix push shopware $(nix build nixpkgs#php82Extensions.grpc --no-link --print-out-paths)
+
