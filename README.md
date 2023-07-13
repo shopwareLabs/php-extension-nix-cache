@@ -1,4 +1,4 @@
-# Generates for PHP extensions pre-built macOS caches
+# Generates for PHP extensions macOS caches
 
 This repository runs every day two times to generate Cachix caches for PHP extensions.
 
