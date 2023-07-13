@@ -6,7 +6,13 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os:
+          - "macos-latest" # mac x64
+          - "ARM64" # mac arm64 (m1)
+        
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
 
