@@ -1,8 +1,8 @@
 name: Generate Cache
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
+  schedule:
+    - cron:  '30 5,17 * * *'
 
 jobs:
   build:
@@ -14,16 +14,17 @@ jobs:
         
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
-
       - uses: cachix/install-nix-action@master
+        if: ${{ matrix.os }} == "macos-latest"
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Use Shopware Cache
         uses: cachix/cachix-action@master
+        if: ${{ matrix.os }} == "macos-latest"
         with:
           name: shopware
+          skipPush: true
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Build Redis (8.1)
