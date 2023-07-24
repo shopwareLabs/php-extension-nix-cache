@@ -9,10 +9,12 @@ jobs:
     strategy:
       matrix:
         package:
-          - "php81Extensions.grpc"
-          - "php81Extensions.redis"
-          - "php82Extensions.grpc"
-          - "php82Extensions.redis"
+          - "nixpkgs#php81Extensions.grpc"
+          - "nixpkgs#php81Extensions.redis"
+          - "nixpkgs#php82Extensions.grpc"
+          - "nixpkgs#php82Extensions.redis"
+          - "github:fossar/nix-phps#php80"
+          - "github:fossar/nix-phps#php74"
         arch:
           - "x86_64-darwin"
           - "aarch64-darwin"
@@ -20,5 +22,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Build
-        run: cachix push shopware $(nix build nixpkgs#${{ matrix.package }} --system ${{ matrix.arch }} --no-link --print-out-paths)
+        run: cachix push shopware $(nix build ${{ matrix.package }} --system ${{ matrix.arch }} --no-link --print-out-paths)
 
