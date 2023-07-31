@@ -17,10 +17,18 @@ jobs:
           - "github:fossar/nix-phps#php74"
         arch:
           - "x86_64-darwin"
-          - "aarch64-darwin"
         
-    runs-on: self-hosted
+    runs-on: macos-latest
     steps:
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Install Cachix
+        run: nix profile install nixpkgs#cachix
+    
+      - name: Authorize Cachix
+        run: cachix authtoken ${{ secrets.CACHIX_AUTH_TOKEN }}
+        
       - name: Build
         run: cachix push shopware $(nix build ${{ matrix.package }} --system ${{ matrix.arch }} --no-link --print-out-paths)
 
