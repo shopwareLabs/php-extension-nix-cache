@@ -11,8 +11,10 @@ jobs:
         package:
           - "nixpkgs#php81Extensions.grpc"
           - "nixpkgs#php81Extensions.redis"
+          - "nixpkgs#php81Extensions.xdebug"
           - "nixpkgs#php82Extensions.grpc"
           - "nixpkgs#php82Extensions.redis"
+          - "nixpkgs#php82Extensions.xdebug"
           - "github:fossar/nix-phps#php80"
           - "github:fossar/nix-phps#php74"
     runs-on: ubuntu-latest
@@ -37,8 +39,10 @@ jobs:
         package:
           - "nixpkgs#php81Extensions.grpc"
           - "nixpkgs#php81Extensions.redis"
+          - "nixpkgs#php81Extensions.xdebug"
           - "nixpkgs#php82Extensions.grpc"
           - "nixpkgs#php82Extensions.redis"
+          - "nixpkgs#php82Extensions.xdebug"
           - "github:fossar/nix-phps#php80"
           - "github:fossar/nix-phps#php74"
         arch:
