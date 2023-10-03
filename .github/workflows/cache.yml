@@ -5,7 +5,7 @@ on:
     - cron:  '30 5,17 * * *'
 
 jobs:
-  linux:
+  build:
     strategy:
       matrix:
         package:
@@ -17,6 +17,10 @@ jobs:
           - "nixpkgs#php82Extensions.xdebug"
           - "github:fossar/nix-phps#php80"
           - "github:fossar/nix-phps#php74"
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - macos-latest-large #m1
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
@@ -33,35 +37,3 @@ jobs:
         
       - name: Build
         run: cachix push shopware $(nix build ${{ matrix.package }} --no-link --print-out-paths)
-  mac:
-    strategy:
-      matrix:
-        package:
-          - "nixpkgs#php81Extensions.grpc"
-          - "nixpkgs#php81Extensions.redis"
-          - "nixpkgs#php81Extensions.xdebug"
-          - "nixpkgs#php82Extensions.grpc"
-          - "nixpkgs#php82Extensions.redis"
-          - "nixpkgs#php82Extensions.xdebug"
-          - "github:fossar/nix-phps#php80"
-          - "github:fossar/nix-phps#php74"
-        arch:
-          - "x86_64-darwin"
-        
-    runs-on: macos-latest
-    steps:
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-        
-      - name: Nix Caching
-        uses: DeterminateSystems/magic-nix-cache-action@main
-        
-      - name: Install Cachix
-        run: nix profile install nixpkgs#cachix
-    
-      - name: Authorize Cachix
-        run: cachix authtoken ${{ secrets.CACHIX_AUTH_TOKEN }}
-        
-      - name: Build
-        run: cachix push shopware $(nix build ${{ matrix.package }} --system ${{ matrix.arch }} --no-link --print-out-paths)
-
