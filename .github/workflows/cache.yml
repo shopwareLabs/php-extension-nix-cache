@@ -21,7 +21,6 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - macos-latest-large #m1
     runs-on: ${{ matrix.os }}
     steps:
       - name: Print out arch
